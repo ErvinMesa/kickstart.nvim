@@ -17,12 +17,23 @@ local servers = {
       },
     },
   },
+  intelephense = {},
+  html = {},
+  tailwindcss = {},
   dockerls = {},
   docker_compose_language_service = {},
-  ruby_lsp = {},
-  rubocop = {},
   ts_ls = {},
   rust_analyzer = {},
 }
 
+local linux_servers = {
+  ruby_lsp = {},
+  rubocop = {},
+}
+
+if package.config:sub(1, 1) == '/' then
+  for i = 1, #linux_servers do
+    servers[#servers + 1] = linux_servers[i]
+  end
+end
 return servers
