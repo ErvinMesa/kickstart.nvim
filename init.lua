@@ -80,6 +80,11 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- [[ Personal Keymaps ]]
+
+vim.keymap.set('n', '<leader>n', '<cmd>cn<CR>', { desc = 'Go to next item in Quickfix List' })
+vim.keymap.set('n', '<leader>N', '<cmd>cp<CR>', { desc = 'Go to previous item in Quickfix List' })
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
