@@ -84,6 +84,7 @@ vim.o.confirm = true
 
 vim.keymap.set('n', '<leader>n', '<cmd>cn<CR>', { desc = 'Go to next item in Quickfix List' })
 vim.keymap.set('n', '<leader>N', '<cmd>cp<CR>', { desc = 'Go to previous item in Quickfix List' })
+vim.keymap.set('n', '<leader>td', '<cmd>TodoTelescope<CR>')
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -431,9 +432,6 @@ require('lazy').setup({
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
-    config = function()
-      vim.keymap.set('n', '<leader>td', '<cmd>TodoTelescope<CR>')
-    end,
   },
 
   { -- Collection of various small independent plugins/modules
