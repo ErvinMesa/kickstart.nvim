@@ -24,6 +24,7 @@ local servers = {
   docker_compose_language_service = {},
   ts_ls = {},
   rust_analyzer = {},
+  gopls = {},
 }
 
 local linux_servers = {
