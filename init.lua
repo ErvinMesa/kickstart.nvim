@@ -75,6 +75,18 @@ vim.o.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
 
+-- [[ Personal Keymaps ]]
+
+vim.keymap.set('n', '<leader>n', '<cmd>cn<CR>', { desc = 'Go to next item in Quickfix List' })
+vim.keymap.set('n', '<leader>N', '<cmd>cp<CR>', { desc = 'Go to previous item in Quickfix List' })
+vim.keymap.set('n', '<leader>td', '<cmd>TodoTelescope<CR>')
+
+-- [[ Personal Config ]]
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.smartindent = true
+vim.o.expandtab = true
+
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
