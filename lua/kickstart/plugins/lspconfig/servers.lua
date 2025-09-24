@@ -19,12 +19,10 @@ local servers = {
   },
   intelephense = {},
   html = {},
-  tailwindcss = {},
   dockerls = {},
   docker_compose_language_service = {},
   ts_ls = {},
   rust_analyzer = {},
-  gopls = {},
   prettier = {},
 }
 
