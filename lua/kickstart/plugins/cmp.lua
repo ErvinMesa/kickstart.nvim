@@ -28,7 +28,7 @@ return {
       },
       mapping = cmp.mapping.preset.insert {
         ['<C-Space>'] = cmp.mapping.complete(), -- manually trigger
-        ['<CR>'] = cmp.mapping.confirm { select = true },
+        -- ['<CR>'] = cmp.mapping.confirm { select = true },
         -- ['<Tab>'] = cmp.mapping(function(fallback)
         --   if cmp.visible() then
         --     cmp.select_next_item()
