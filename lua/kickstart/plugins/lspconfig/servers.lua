@@ -25,6 +25,16 @@ local servers = {
   prettier = {},
   gopls = {},
   eslint = {},
+  emmet_ls = {
+    filetypes = { 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
+    init_options = {
+      html = {
+        options = {
+          ['bem.enabled'] = true,
+        },
+      },
+    },
+  },
 }
 
 local linux_servers = {

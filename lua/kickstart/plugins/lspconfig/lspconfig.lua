@@ -184,24 +184,9 @@ return {
           -- by the server configuration above. Useful when disabling
           -- certain features of an LSP (for example, turning off formatting for ts_ls)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
+          vim.lsp.config('lspconfig')[server_name].setup(server)
         end,
       },
     }
-    require('lspconfig').emmet_ls.setup {
-      capabilities = capabilities,
-      filetypes = { 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
-      init_options = {
-        html = {
-          options = {
-            ['bem.enabled'] = true,
-          },
-        },
-      },
-    }
-
-    local lspconfig = require 'lspconfig'
-
-    lspconfig.gopls.setup {}
   end,
 }
