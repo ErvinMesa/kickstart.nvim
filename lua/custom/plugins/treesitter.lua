@@ -5,7 +5,6 @@ return {
   'nvim-treesitter/nvim-treesitter',
   event = { 'BufReadPost', 'BufNewFile' },
   build = ':TSUpdate',
-  tag = 'v0.10.0',
   lazy = false,
   opts = {
     ensure_installed = {
@@ -52,4 +51,13 @@ return {
       },
     },
   },
+  config = function()
+    require('telescope').setup {
+      defaults = {
+        preview = {
+          treesitter = false,
+        },
+      },
+    }
+  end,
 }
