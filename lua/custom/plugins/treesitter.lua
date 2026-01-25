@@ -20,6 +20,8 @@ return {
       'yaml',
       'markdown',
       'markdown_inline',
+      'php',
+      'phpdoc',
     },
     auto_install = false,
     sync_install = false,

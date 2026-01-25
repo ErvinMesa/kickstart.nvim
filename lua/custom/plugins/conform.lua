@@ -22,11 +22,27 @@ return {
         return {
           timeout_ms = 500,
           lsp_format = 'fallback',
+          async = false,
+          timeout_ms = 1000,
+          lsp_fallback = true,
         }
       end
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
+      php = { 'php' },
     },
+    formatters = {
+      ['php-cs-fixer'] = {
+        command = 'php-cs-fixer',
+        args = {
+          'fix',
+          '--rules=@PSR12',
+          '$FILENAME',
+        },
+        stdin = false,
+      },
+    },
+    notify_on_error = true,
   },
 }

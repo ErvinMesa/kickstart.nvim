@@ -4,16 +4,14 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
 
   lua_ls = {
-    -- cmd = { ... },
-    -- filetypes = { ... },
-    -- capabilities = {},
+    cmd = { 'lua-language-server' },
+    filetypes = { 'lua' },
+    root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
     settings = {
       Lua = {
-        completion = {
-          callSnippet = 'Replace',
+        runtime = {
+          version = 'LuaJIT',
         },
-        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-        -- diagnostics = { disable = { 'missing-fields' } },
       },
     },
   },
