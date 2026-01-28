@@ -52,16 +52,6 @@ vim.o.updatetime = 250
 -- Decrease mapped sequence wait time
 vim.o.timeoutlen = 300
 
--- [[ Performance Optimizations ]]
--- Reduce redraw overhead
-vim.opt.lazyredraw = true
--- Limit syntax highlighting for large files
-vim.opt.synmaxcol = 300
--- Reduce animation for smoother experience
-vim.opt.guicursor = ''
--- Improve responsiveness with faster rendering
-vim.opt.ttyfast = true
-
 -- Configure how new splits should be opened
 vim.o.splitright = true
 vim.o.splitbelow = true

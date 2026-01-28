@@ -53,7 +53,25 @@ return {
       },
     },
   },
-  config = function()
+  config = function(_, opts)
+    -- Apply nvim-treesitter configuration
+    require('nvim-treesitter.configs').setup(opts)
+
+    -- Configure treesitter folding
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = '*',
+      callback = function(ev)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.uv.fs_stat, vim.fs.normalize(ev.file))
+        if ok and stats and stats.size < max_filesize then
+          vim.wo.foldlevel = 99
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Use treesitter for folds
+        end
+      end,
+    })
+
+    -- Disable treesitter in Telescope previews for better performance
     require('telescope').setup {
       defaults = {
         preview = {
