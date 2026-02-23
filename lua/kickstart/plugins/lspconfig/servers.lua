@@ -4,9 +4,6 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
 
   lua_ls = {
-    cmd = { 'lua-language-server' },
-    filetypes = { 'lua' },
-    root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
     settings = {
       Lua = {
         runtime = {
@@ -15,14 +12,62 @@ local servers = {
       },
     },
   },
-  intelephense = {},
+
+  intelephense = {
+    settings = {
+      intelephense = {
+        stubs = {
+          'apache', 'bcmath', 'bz2', 'calendar', 'com_dotnet', 'Core', 'ctype', 'curl', 'date',
+          'dba', 'dom', 'enchant', 'exif', 'FFI', 'fileinfo', 'filter', 'fpm', 'ftp', 'gd',
+          'gettext', 'gmp', 'hash', 'iconv', 'imap', 'intl', 'json', 'ldap', 'libxml',
+          'mbstring', 'meta', 'mysqli', 'oci8', 'odbc', 'openssl', 'pcntl', 'pcre',
+          'PDO', 'pdo_ibm', 'pdo_mysql', 'pdo_pgsql', 'pdo_sqlite', 'pgsql', 'Phar',
+          'posix', 'pspell', 'readline', 'Reflection', 'session', 'shmop', 'SimpleXML',
+          'snmp', 'soap', 'sockets', 'sodium', 'SPL', 'sqlite3', 'standard', 'superglobals',
+          'sysvmsg', 'sysvsem', 'sysvshm', 'tidy', 'tokenizer', 'xml', 'xmlreader',
+          'xmlrpc', 'xmlwriter', 'xsl', 'Zend OPcache', 'zip', 'zlib',
+          'redis', 'imagick', 'swoole',
+        },
+        files = {
+          maxSize = 5000000,
+        },
+      },
+    },
+  },
+
   html = {},
   dockerls = {},
   docker_compose_language_service = {},
   rust_analyzer = {},
-  prettier = {},
-  gopls = {},
+
+  gopls = {
+    settings = {
+      gopls = {
+        staticcheck = true,
+        completeUnimported = true,
+        usePlaceholders = true,
+        analyses = {
+          unusedparams = true,
+          shadow = true,
+          nilness = true,
+          unusedwrite = true,
+          useany = true,
+        },
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+      },
+    },
+  },
+
   eslint = {},
+
   emmet_ls = {
     filetypes = { 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
     init_options = {
@@ -35,14 +80,9 @@ local servers = {
   },
 }
 
-local linux_servers = {
-  ruby_lsp = {},
-  rubocop = {},
-}
-
 if package.config:sub(1, 1) == '/' then
-  for i = 1, #linux_servers do
-    servers[#servers + 1] = linux_servers[i]
-  end
+  servers.ruby_lsp = {}
+  servers.rubocop = {}
 end
+
 return servers

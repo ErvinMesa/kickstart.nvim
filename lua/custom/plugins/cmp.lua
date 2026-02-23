@@ -49,7 +49,6 @@ return {
         ['<C-e>'] = cmp.mapping.abort(),
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<CR>'] = cmp.mapping.confirm { select = false },
         ['<Tab>'] = cmp.mapping(function(fallback)
           if luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
