@@ -142,6 +142,32 @@ return {
     -- Apply capabilities globally to all LSP servers via native 0.11+ API
     vim.lsp.config('*', { capabilities = capabilities })
 
+    -- Work around nested root marker crashes in some upstream TS server configs.
+    local ts_root_markers = {
+      'package-lock.json',
+      'yarn.lock',
+      'pnpm-lock.yaml',
+      'bun.lockb',
+      'bun.lock',
+      '.git',
+    }
+    local ts_root_dir = function(bufnr, on_dir)
+      local deno_root = vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc' })
+      local deno_lock_root = vim.fs.root(bufnr, { 'deno.lock' })
+      local project_root = vim.fs.root(bufnr, ts_root_markers)
+
+      if deno_lock_root and (not project_root or #deno_lock_root > #project_root) then
+        return
+      end
+      if deno_root and (not project_root or #deno_root >= #project_root) then
+        return
+      end
+
+      on_dir(project_root or vim.fn.getcwd())
+    end
+    vim.lsp.config('ts_ls', { root_dir = ts_root_dir })
+    vim.lsp.config('vtsls', { root_dir = ts_root_dir })
+
     -- Register each server config via native vim.lsp.config()
     local servers = require 'kickstart.plugins.lspconfig.servers'
     for name, config in pairs(servers) do
@@ -157,8 +183,11 @@ return {
 
     require('mason-lspconfig').setup {
       automatic_enable = {
-        exclude = { 'ts_ls' }, -- typescript-tools.nvim handles TS/JS instead
+        exclude = { 'ts_ls', 'vtsls' }, -- typescript-tools.nvim handles TS/JS instead
       },
     }
+
+    -- Keep TS/JS under typescript-tools.nvim only.
+    vim.lsp.enable({ 'ts_ls', 'vtsls' }, false)
   end,
 }

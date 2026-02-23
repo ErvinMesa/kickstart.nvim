@@ -1,3 +1,12 @@
+local eslint_root_markers = {
+  'package-lock.json',
+  'yarn.lock',
+  'pnpm-lock.yaml',
+  'bun.lockb',
+  'bun.lock',
+  '.git',
+}
+
 local servers = {
   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
   -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -66,7 +75,18 @@ local servers = {
     },
   },
 
-  eslint = {},
+  eslint = {
+    root_dir = function(bufnr, on_dir)
+      if vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc', 'deno.lock' }) then
+        return
+      end
+
+      local root = vim.fs.root(bufnr, eslint_root_markers) or vim.fn.getcwd()
+      if type(root) == 'string' and root ~= '' then
+        on_dir(root)
+      end
+    end,
+  },
 
   emmet_ls = {
     filetypes = { 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
