@@ -23,6 +23,25 @@ local function ruby_lsp_root_dir(bufnr, on_dir)
   on_dir(vim.fs.root(bufnr, ruby_root_markers) or vim.fn.getcwd())
 end
 
+local function rbenv_executable()
+  if vim.fn.executable 'rbenv' == 1 then
+    return 'rbenv'
+  end
+
+  local rbenv_path = (vim.env.HOME or '') .. '/.rbenv/bin/rbenv'
+  return vim.uv.fs_stat(rbenv_path) and rbenv_path or nil
+end
+
+local function ruby_lsp_cmd(dispatchers, config)
+  local cmd = { 'ruby-lsp' }
+  local rbenv = rbenv_executable()
+  if rbenv then
+    cmd = { rbenv, 'exec', 'ruby-lsp' }
+  end
+
+  return vim.lsp.rpc.start(cmd, dispatchers, config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir })
+end
+
 local function package_has_eslint_config(root)
   local package_json = root and (root .. '/package.json') or nil
   if not package_json or vim.fn.filereadable(package_json) ~= 1 then
@@ -139,6 +158,7 @@ local servers = {
 
 if package.config:sub(1, 1) == '/' then
   servers.ruby_lsp = {
+    cmd = ruby_lsp_cmd,
     root_dir = ruby_lsp_root_dir,
     single_file_support = true,
     init_options = {
@@ -147,6 +167,9 @@ if package.config:sub(1, 1) == '/' then
     },
     settings = {
       rubyLsp = {
+        rubyVersionManager = {
+          identifier = 'rbenv',
+        },
         formatter = 'auto',
         linters = { 'rubocop' },
         pullDiagnosticsOn = 'save',
@@ -190,6 +213,10 @@ if package.config:sub(1, 1) == '/' then
         },
       },
     },
+    reuse_client = function(client, config)
+      config.cmd_cwd = config.root_dir
+      return client.config.cmd_cwd == config.cmd_cwd
+    end,
   }
 end
 
