@@ -20,17 +20,22 @@ return {
         return nil
       else
         return {
-          timeout_ms = 500,
-          lsp_format = 'fallback',
           async = false,
           timeout_ms = 1000,
-          lsp_fallback = true,
+          lsp_format = 'fallback',
         }
       end
     end,
     formatters_by_ft = {
+      javascript = { 'prettierd', 'prettier', stop_after_first = true },
+      javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+      json = { 'prettierd', 'prettier', stop_after_first = true },
+      jsonc = { 'prettierd', 'prettier', stop_after_first = true },
       lua = { 'stylua' },
       php = { 'php' },
+      ruby = { 'rubocop', 'standardrb', stop_after_first = true },
+      typescript = { 'prettierd', 'prettier', stop_after_first = true },
+      typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
     },
     formatters = {
       ['php-cs-fixer'] = {

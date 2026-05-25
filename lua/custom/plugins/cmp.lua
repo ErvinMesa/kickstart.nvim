@@ -16,6 +16,17 @@ return {
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
 
+    local current_buffer_source = {
+      name = 'buffer',
+      priority = 50,
+      keyword_length = 5,
+      option = {
+        get_bufnrs = function()
+          return { vim.api.nvim_get_current_buf() }
+        end,
+      },
+    }
+
     cmp.setup {
       completion = {
         completeopt = 'menu,menuone,noinsert',
@@ -67,10 +78,33 @@ return {
       sources = cmp.config.sources {
         { name = 'nvim_lsp', priority = 100 },
         { name = 'luasnip', priority = 75 },
-        { name = 'buffer', priority = 50, option = { get_bufnrs = function() return { vim.api.nvim_get_current_buf() } end } },
+        current_buffer_source,
         { name = 'path', priority = 40 },
       },
     }
+
+    cmp.setup.filetype({ 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }, {
+      completion = {
+        keyword_length = 3,
+      },
+      sources = cmp.config.sources {
+        { name = 'nvim_lsp', priority = 100 },
+        { name = 'path', priority = 80 },
+        { name = 'luasnip', priority = 60 },
+        current_buffer_source,
+      },
+    })
+
+    cmp.setup.filetype({ 'ruby', 'eruby' }, {
+      completion = {
+        keyword_length = 3,
+      },
+      sources = cmp.config.sources {
+        { name = 'nvim_lsp', priority = 100 },
+        { name = 'path', priority = 60 },
+        current_buffer_source,
+      },
+    })
 
     -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline({ '/', '?' }, {

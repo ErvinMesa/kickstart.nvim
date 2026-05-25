@@ -2,6 +2,19 @@ return {
   'ThePrimeagen/harpoon',
   branch = 'harpoon2',
   dependencies = { 'nvim-lua/plenary.nvim' },
+  keys = {
+    { '<leader>a', desc = 'Harpoon add file' },
+    { '<C-e>', desc = 'Harpoon menu' },
+    { '<C-h>', desc = 'Harpoon file 1' },
+    { '<C-j>', desc = 'Harpoon file 2' },
+    { '<C-k>', desc = 'Harpoon file 3' },
+    { '<C-l>', desc = 'Harpoon file 4' },
+    { '<C-b>', desc = 'Harpoon file 5' },
+    { '<C-n>', desc = 'Harpoon file 6' },
+    { '<C-m>', desc = 'Harpoon file 7' },
+    { '<C-S-P>', desc = 'Harpoon previous' },
+    { '<C-S-N>', desc = 'Harpoon next' },
+  },
   config = function()
     local harpoon = require 'harpoon'
     harpoon:setup {

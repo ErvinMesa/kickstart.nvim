@@ -10,7 +10,6 @@ return {
   require 'custom.plugins.nvim-ts-autotag',
   require 'custom.plugins.diffview',
   require 'custom.plugins.typescript-tools',
-  require 'custom.plugins.claude-code',
   require 'custom.plugins.undotree',
   require 'custom.plugins.fugitive',
   require 'custom.plugins.neo-tree',

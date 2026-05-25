@@ -7,6 +7,16 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- Disable unused builtin plugins early. Neo-tree replaces netrw; archives/man/etc. can
+-- still be opened by re-enabling these if needed.
+vim.g.loaded_gzip = 1
+vim.g.loaded_man = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_zipPlugin = 1
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -31,7 +41,9 @@ vim.o.showmode = false
 -- vim.schedule(function()
 --   vim.o.clipboard = 'unnamedplus'
 -- end)
-vim.o.clipboard = 'unnamedplus'
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -72,6 +84,9 @@ vim.o.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.o.cursorline = true
+
+-- Keep extremely long lines from making syntax/redraw sluggish.
+vim.o.synmaxcol = 300
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
@@ -144,8 +159,14 @@ require('lazy').setup({
   -- LSP Plugins
   require 'kickstart.plugins.lspconfig.lspconfig',
 
+  -- Keep only non-overridden kickstart plugins; lazy imports scan every file.
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.harpoon',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+
   -- Custom optimized plugins (overrides kickstart defaults for better performance)
-  { import = 'kickstart.plugins' },
   { import = 'custom.plugins' },
 }, {
   ui = {

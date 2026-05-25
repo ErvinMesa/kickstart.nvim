@@ -5,7 +5,6 @@ return {
   'nvim-treesitter/nvim-treesitter',
   event = { 'BufReadPost', 'BufNewFile' },
   build = ':TSUpdate',
-  lazy = false,
   opts = {
     ensure_installed = {
       'bash',
@@ -13,6 +12,7 @@ return {
       'vim',
       'vimdoc',
       'html',
+      'embedded_template',
       'javascript',
       'typescript',
       'tsx',
@@ -22,6 +22,7 @@ return {
       'markdown_inline',
       'php',
       'phpdoc',
+      'ruby',
     },
     auto_install = false,
     sync_install = false,
@@ -29,8 +30,11 @@ return {
     highlight = {
       enable = true,
       disable = function(lang, bufnr)
-        -- Disable for large files
         local max_filesize = 500 * 1024 -- 500 KB
+        if vim.tbl_contains({ 'javascript', 'ruby', 'tsx', 'typescript' }, lang) then
+          max_filesize = 300 * 1024
+        end
+
         local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
         if ok and stats and stats.size > max_filesize then
           return true
@@ -41,7 +45,7 @@ return {
     },
     indent = {
       enable = true,
-      disable = { 'ruby' },
+      disable = { 'javascript', 'ruby', 'tsx', 'typescript' },
     },
     incremental_selection = {
       enable = true,
@@ -56,28 +60,5 @@ return {
   config = function(_, opts)
     -- Apply nvim-treesitter configuration
     require('nvim-treesitter.configs').setup(opts)
-
-    -- Configure treesitter folding
-    vim.api.nvim_create_autocmd('FileType', {
-      pattern = '*',
-      callback = function(ev)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.uv.fs_stat, vim.fs.normalize(ev.file))
-        if ok and stats and stats.size < max_filesize then
-          vim.wo.foldlevel = 99
-          vim.wo.foldmethod = 'expr'
-          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()' -- Use treesitter for folds
-        end
-      end,
-    })
-
-    -- Disable treesitter in Telescope previews for better performance
-    require('telescope').setup {
-      defaults = {
-        preview = {
-          treesitter = false,
-        },
-      },
-    }
   end,
 }

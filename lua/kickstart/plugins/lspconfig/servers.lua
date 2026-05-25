@@ -1,11 +1,42 @@
-local eslint_root_markers = {
-  'package-lock.json',
-  'yarn.lock',
-  'pnpm-lock.yaml',
-  'bun.lockb',
-  'bun.lock',
+local eslint_config_markers = {
+  'eslint.config.js',
+  'eslint.config.mjs',
+  'eslint.config.cjs',
+  '.eslintrc',
+  '.eslintrc.js',
+  '.eslintrc.cjs',
+  '.eslintrc.json',
+  '.eslintrc.yaml',
+  '.eslintrc.yml',
+}
+
+local ruby_root_markers = {
+  'Gemfile',
+  'gems.rb',
+  '.ruby-version',
+  '.rubocop.yml',
+  '.standard.yml',
   '.git',
 }
+
+local function ruby_lsp_root_dir(bufnr, on_dir)
+  on_dir(vim.fs.root(bufnr, ruby_root_markers) or vim.fn.getcwd())
+end
+
+local function package_has_eslint_config(root)
+  local package_json = root and (root .. '/package.json') or nil
+  if not package_json or vim.fn.filereadable(package_json) ~= 1 then
+    return false
+  end
+
+  local ok_read, lines = pcall(vim.fn.readfile, package_json)
+  if not ok_read then
+    return false
+  end
+
+  local ok_decode, package = pcall(vim.json.decode, table.concat(lines, '\n'), { luanil = { object = true } })
+  return ok_decode and type(package) == 'table' and type(package.eslintConfig) == 'table'
+end
 
 local servers = {
   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -81,7 +112,13 @@ local servers = {
         return
       end
 
-      local root = vim.fs.root(bufnr, eslint_root_markers) or vim.fn.getcwd()
+      local root = vim.fs.root(bufnr, eslint_config_markers)
+      if not root then
+        local package_root = vim.fs.root(bufnr, { 'package.json' })
+        if package_has_eslint_config(package_root) then
+          root = package_root
+        end
+      end
       if type(root) == 'string' and root ~= '' then
         on_dir(root)
       end
@@ -101,8 +138,59 @@ local servers = {
 }
 
 if package.config:sub(1, 1) == '/' then
-  servers.ruby_lsp = {}
-  servers.rubocop = {}
+  servers.ruby_lsp = {
+    root_dir = ruby_lsp_root_dir,
+    single_file_support = true,
+    init_options = {
+      formatter = 'auto',
+      linters = { 'rubocop' },
+    },
+    settings = {
+      rubyLsp = {
+        formatter = 'auto',
+        linters = { 'rubocop' },
+        pullDiagnosticsOn = 'save',
+        indexing = {
+          excludedPatterns = {
+            '.git',
+            'log',
+            'node_modules',
+            'tmp',
+            'vendor/bundle',
+          },
+        },
+        featuresConfiguration = {
+          codeLens = {
+            enableAll = false,
+            enableTestCodeLens = false,
+          },
+          inlayHint = {
+            enableAll = false,
+          },
+        },
+        enabledFeatures = {
+          codeActions = true,
+          codeLens = false,
+          completion = true,
+          definition = true,
+          diagnostics = true,
+          documentHighlights = false,
+          documentLink = true,
+          documentSymbols = true,
+          foldingRanges = false,
+          formatting = true,
+          hover = true,
+          inlayHint = false,
+          onTypeFormatting = false,
+          selectionRanges = true,
+          semanticHighlighting = false,
+          signatureHelp = true,
+          typeHierarchy = false,
+          workspaceSymbol = true,
+        },
+      },
+    },
+  }
 end
 
 return servers

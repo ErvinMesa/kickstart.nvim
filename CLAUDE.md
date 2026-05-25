@@ -132,4 +132,3 @@ To add a new plugin:
 - Nerd Font support is enabled (`vim.g.have_nerd_font = true`)
 - Window navigation keybinds (C-h/j/k/l) are commented out in init.lua
 - Clipboard sync is immediate, not scheduled on UiEnter
-- The config includes the claude-code.nvim plugin for AI-assisted development

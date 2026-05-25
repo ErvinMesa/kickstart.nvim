@@ -1,7 +1,23 @@
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
-  event = 'VimEnter',
+  cmd = 'Telescope',
   branch = '0.1.x',
+  keys = {
+    { '<leader>sh', '<cmd>Telescope help_tags<CR>', desc = '[S]earch [H]elp' },
+    { '<leader>sk', '<cmd>Telescope keymaps<CR>', desc = '[S]earch [K]eymaps' },
+    { '<leader>sf', '<cmd>Telescope find_files<CR>', desc = '[S]earch [F]iles' },
+    { '<C-p>', '<cmd>Telescope git_files<CR>', desc = 'Search git files' },
+    { '<leader>ss', '<cmd>Telescope builtin<CR>', desc = '[S]earch [S]elect Telescope' },
+    { '<leader>sw', '<cmd>Telescope grep_string<CR>', desc = '[S]earch current [W]ord' },
+    { '<leader>sg', '<cmd>Telescope live_grep<CR>', desc = '[S]earch by [G]rep' },
+    { '<leader>sd', '<cmd>Telescope diagnostics<CR>', desc = '[S]earch [D]iagnostics' },
+    { '<leader>sr', '<cmd>Telescope resume<CR>', desc = '[S]earch [R]esume' },
+    { '<leader>s.', '<cmd>Telescope oldfiles<CR>', desc = '[S]earch Recent Files' },
+    { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = '[ ] Find existing buffers' },
+    { '<leader>/', desc = '[/] Fuzzily search in current buffer' },
+    { '<leader>s/', desc = '[S]earch [/] in Open Files' },
+    { '<leader>sn', desc = '[S]earch [N]eovim files' },
+  },
   dependencies = {
     'nvim-lua/plenary.nvim',
     { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -21,11 +37,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- Useful for getting pretty icons, but requires a Nerd Font.
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-    {
-      'ThePrimeagen/harpoon',
-      branch = 'harpoon2',
-      dependencies = { 'nvim-lua/plenary.nvim' },
-    },
   },
   config = function()
     -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -53,11 +64,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
       --
-      -- defaults = {
-      --   mappings = {
-      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-      --   },
-      -- },
+      defaults = {
+        preview = {
+          treesitter = false,
+        },
+      },
       -- pickers = {}
       extensions = {
         ['ui-select'] = {
