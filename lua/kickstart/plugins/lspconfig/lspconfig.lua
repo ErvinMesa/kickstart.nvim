@@ -81,7 +81,8 @@ return {
           ts_ls = true,
           vtsls = true,
         }
-        if client
+        if
+          client
           and not skip_document_highlight[client.name]
           and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
         then
@@ -200,6 +201,11 @@ return {
       'stylua', -- Used to format Lua code
       'prettier', -- Used to format JS/TS/CSS/HTML
       'prettierd', -- Faster Prettier daemon for JS/TS
+      'php-cs-fixer',
+      'blade-formatter',
+      'htmlbeautifier',
+      'goimports',
+      'clang-format',
     })
     require('mason-tool-installer').setup {
       ensure_installed = ensure_installed,

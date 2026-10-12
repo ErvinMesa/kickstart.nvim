@@ -2,6 +2,9 @@ local eslint_config_markers = {
   'eslint.config.js',
   'eslint.config.mjs',
   'eslint.config.cjs',
+  'eslint.config.ts',
+  'eslint.config.mts',
+  'eslint.config.cts',
   '.eslintrc',
   '.eslintrc.js',
   '.eslintrc.cjs',
@@ -95,9 +98,26 @@ local servers = {
   },
 
   html = {},
+  cssls = {},
+  jsonls = {},
+  tailwindcss = {},
+  basedpyright = {
+    settings = {
+      basedpyright = {
+        disableOrganizeImports = true,
+        analysis = { typeCheckingMode = 'standard' },
+      },
+    },
+  },
+  ruff = {
+    on_attach = function(client)
+      client.server_capabilities.hoverProvider = false
+    end,
+  },
   dockerls = {},
   docker_compose_language_service = {},
   rust_analyzer = {},
+  clangd = {},
 
   gopls = {
     settings = {
@@ -145,7 +165,7 @@ local servers = {
   },
 
   emmet_ls = {
-    filetypes = { 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
+    filetypes = { 'blade', 'css', 'eruby', 'html', 'javascript', 'javascriptreact', 'typescriptreact' },
     init_options = {
       html = {
         options = {

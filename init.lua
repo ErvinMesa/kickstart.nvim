@@ -108,6 +108,17 @@ vim.o.shiftwidth = 2
 vim.o.smartindent = true
 vim.o.expandtab = true
 
+vim.filetype.add { pattern = { ['.*%.blade%.php'] = 'blade' } }
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('stack-indentation', { clear = true }),
+  pattern = { 'python', 'php', 'blade', 'go' },
+  callback = function()
+    vim.bo.tabstop = 4
+    vim.bo.shiftwidth = 4
+    vim.bo.expandtab = vim.bo.filetype ~= 'go'
+  end,
+})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 

@@ -3,15 +3,26 @@
 
 return {
   'nvim-treesitter/nvim-treesitter',
+  branch = 'master', -- This configuration uses the configs.setup API.
   event = { 'BufReadPost', 'BufNewFile' },
   build = ':TSUpdate',
   opts = {
     ensure_installed = {
       'bash',
+      'c',
+      'cpp',
       'lua',
       'vim',
       'vimdoc',
       'html',
+      'css',
+      'scss',
+      'blade',
+      'python',
+      'go',
+      'gomod',
+      'gowork',
+      'gosum',
       'embedded_template',
       'javascript',
       'typescript',
@@ -21,6 +32,7 @@ return {
       'markdown',
       'markdown_inline',
       'php',
+      'php_only',
       'phpdoc',
       'ruby',
     },

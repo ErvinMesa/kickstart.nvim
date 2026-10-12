@@ -162,6 +162,10 @@ local function patch_tsserver_provider_for_bun()
   provider_mod.get_executable_path = function(self)
     local root = get_root_absolute(self.root_dir)
     if root and project_uses_bun(root) then
+      local project_tsserver = root .. '/node_modules/typescript/lib/tsserver.js'
+      if file_exists(project_tsserver) then
+        return Path:new(project_tsserver)
+      end
       local preferred = nil
       local preferred_major = 0
       local preferred_minor = 0
@@ -284,7 +288,7 @@ local function patch_inferred_compiler_options_for_bun()
           providePrefixAndSuffixTextForRename = true,
           allowRenameOfImportPath = true,
           includePackageJsonAutoImports = 'auto',
-          includeCompletionsForModuleExports = false,
+          includeCompletionsForModuleExports = true,
           includeCompletionsWithSnippetText = false,
         },
         watchOptions = {
@@ -421,7 +425,7 @@ return {
         tsserver_file_preferences = function()
           return {
             includePackageJsonAutoImports = 'auto',
-            includeCompletionsForModuleExports = false,
+            includeCompletionsForModuleExports = true,
             includeCompletionsForImportStatements = true,
             includeCompletionsWithSnippetText = false,
             allowRenameOfImportPath = true,
